@@ -28,7 +28,7 @@ def facebook():
             return challenge, 200
 
     if request.method == "POST":
-        sentry.captureMessage(pprint.pformat(request.json))
+        sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
         print request.json
 
     return 'OK\n', 200
