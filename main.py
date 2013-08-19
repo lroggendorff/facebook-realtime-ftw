@@ -14,7 +14,7 @@ def hello():
     return 'Hello World!'
 
 
-@app.route('/facebook')
+@app.route('/facebook', methods=['POST', 'GET'])
 def facebook():
     if request.method == "GET":
         mode = request.args.get("hub.mode", "")
