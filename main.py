@@ -4,6 +4,9 @@ from flask import Flask, request
 
 from raven.contrib.flask import Sentry
 
+from cloudant import cloudant
+
+
 app = Flask(__name__)
 
 sentry = Sentry(app)
@@ -28,7 +31,10 @@ def facebook():
             return challenge, 200
 
     if request.method == "POST":
-        sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
         print request.json
+        try:
+            cloudant.post(dict(data=request.json, platform="facebook"))
+        except:
+            sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
 
     return 'OK\n', 200
