@@ -35,8 +35,8 @@ def facebook():
         try:
             print "Posting to Cloudant..."
             print db
-            pprint.pprint(request.json)
-            cloudant.post(db, dict(data=request.json, platform="facebook"))
+            response = cloudant.post(db, dict(data=request.json, platform="facebook"))
+            pprint.pprint(response)
         except:
             print "FAIL."
             pprint.pprint(request.json)
