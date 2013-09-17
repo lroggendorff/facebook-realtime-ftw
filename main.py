@@ -29,6 +29,7 @@ def facebook():
             return challenge, 200
 
     if request.method == "POST":
+        print "Handling POST in /facebook"
         db = settings.CLOUDANT_DATABASE if settings.CLOUDANT_DATABASE else "raw_facebook_events"
         try:
             cloudant.post(db, dict(data=request.json, platform="facebook"))
