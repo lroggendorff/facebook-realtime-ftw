@@ -25,10 +25,7 @@ def facebook():
         challenge = request.args.get("hub.challenge", "")
         verify_token = request.args.get("hub.verify_token", "")
 
-        # TODO
-        # Verify verify_token
-
-        if mode == "subscribe" and verify_token:
+        if mode == "subscribe" and verify_token == "v3riFY":
             return challenge, 200
 
     if request.method == "POST":
@@ -36,6 +33,7 @@ def facebook():
         try:
             cloudant.post(db, dict(data=request.json, platform="facebook"))
         except:
+            pprint.pprint(request.json)
             sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
 
     return 'OK\n', 200
