@@ -6,6 +6,7 @@ from raven.contrib.flask import Sentry
 
 from cloudant import cloudant
 
+import settings
 
 app = Flask(__name__)
 
@@ -31,9 +32,9 @@ def facebook():
             return challenge, 200
 
     if request.method == "POST":
-        print request.json
+        db = settings.CLOUDANT_DATABASE if settings.CLOUDANT_DATABASE else "raw_facebook_events"
         try:
-            cloudant.post("raw_facebook_events", dict(data=request.json, platform="facebook"))
+            cloudant.post(db, dict(data=request.json, platform="facebook"))
         except:
             sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
 
