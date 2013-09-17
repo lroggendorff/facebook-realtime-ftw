@@ -21,6 +21,7 @@ def hello():
 @app.route('/facebook', methods=['POST', 'GET'])
 def facebook():
     if request.method == "GET":
+        print "Handling GET in /facebook"
         mode = request.args.get("hub.mode", "")
         challenge = request.args.get("hub.challenge", "")
         verify_token = request.args.get("hub.verify_token", "")
@@ -32,8 +33,12 @@ def facebook():
         print "Handling POST in /facebook"
         db = settings.CLOUDANT_DATABASE if settings.CLOUDANT_DATABASE else "raw_facebook_events"
         try:
+            print "Posting to Cloudant..."
+            print db
+            pprint.pprint(request.json)
             cloudant.post(db, dict(data=request.json, platform="facebook"))
         except:
+            print "FAIL."
             pprint.pprint(request.json)
             sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
 
