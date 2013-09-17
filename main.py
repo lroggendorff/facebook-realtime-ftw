@@ -33,7 +33,7 @@ def facebook():
     if request.method == "POST":
         print request.json
         try:
-            cloudant.post("streams_facebook", dict(data=request.json, platform="facebook"))
+            cloudant.post("raw_facebook_events", dict(data=request.json, platform="facebook"))
         except:
             sentry.captureMessage(pprint.pformat(request.json), tags={"type": "Facebook"})
 
